@@ -2,7 +2,9 @@ package org.example.controller;
 
 import org.example.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +36,11 @@ public class ResourceController {
     public ResponseEntity<Object> getResource(@PathVariable Long id) {
         try {
             byte[] resourceData = resourceService.getResource(id);
-            return ResponseEntity.ok(resourceData);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf("audio/mpeg"));
+
+            return new ResponseEntity<>(resourceData, headers, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {

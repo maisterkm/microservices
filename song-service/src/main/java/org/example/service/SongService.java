@@ -3,6 +3,7 @@ package org.example.service;
 import java.util.List;
 
 import org.example.dto.SongDto;
+import org.example.exception.SongNotFoundException;
 import org.example.model.Song;
 import org.example.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SongService {
 
     public SongDto getSong(Long id) {
         Song song = songRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Song metadata with ID=" + id + " not found"));
+                .orElseThrow(() -> new SongNotFoundException("Song metadata with ID=" + id + " not found"));
         SongDto songDto = new SongDto();
         songDto.setId(song.getId());
         songDto.setName(song.getName());

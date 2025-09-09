@@ -29,13 +29,13 @@ public class ResourceController {
     private ResourceService resourceService;
 
     @PostMapping
-    public ResponseEntity<Object> uploadResource(@RequestBody byte[] mp3Data) throws IOException, TikaException {
+    public ResponseEntity<ResourceResponseDto> uploadResource(@RequestBody byte[] mp3Data) throws IOException, TikaException {
             Long resourceId = resourceService.saveResource(mp3Data);
             return ResponseEntity.ok().body(new ResourceResponseDto(resourceId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getResource(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getResource(@PathVariable Long id) {
             byte[] resourceData = resourceService.getResource(id);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.valueOf("audio/mpeg"));
@@ -44,7 +44,7 @@ public class ResourceController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Object> deleteResources(@RequestParam String id) {
+    public ResponseEntity<DeleteResponseDto> deleteResources(@RequestParam String id) {
         int characterCount = id.length();
 
         final int MAX_CHARS_LIMIT = 150;

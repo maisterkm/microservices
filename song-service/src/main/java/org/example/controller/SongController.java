@@ -2,6 +2,7 @@ package org.example.controller;
 
 import java.util.List;
 
+import org.example.dto.DeleteResponseDto;
 import org.example.dto.SongDto;
 import org.example.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,12 @@ public class SongController {
     }
 
     @DeleteMapping
-    public ResponseEntity<List<Long>> deleteSongs(@RequestParam List<Long> ids) {
-        List<Long> deletedIds = songService.deleteSongs(ids);
-        return ResponseEntity.ok(deletedIds);
+    public ResponseEntity<DeleteResponseDto> deleteSongs(
+            @RequestParam(value = "ids", required = false) List<Long> ids,
+            @RequestParam(value = "id", required = false) String idParam
+    ) {
+        List<Long> deletedIds = songService.deleteSongs(ids, idParam);
+        return ResponseEntity.ok(new DeleteResponseDto(deletedIds));
     }
+
 }
